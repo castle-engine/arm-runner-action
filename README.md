@@ -1,5 +1,25 @@
 # arm-runner-action
 
+**This is a fork of [pguyot/arm-runner-action](https://github.com/pguyot/arm-runner-action) maintained by [Castle Game Engine](https://castle-engine.io/).**
+
+Why we fork:
+
+- To be compatible with `ubuntu-latest` GitHub-hosted runners (Ubuntu 26.04 now). The latest upstream release (v2.6.5, used by `pguyot/arm-runner-action@v2`) fails there, because it tries to install `qemu-user-static`, which is only a virtual package in Ubuntu 26.04 ("has no installation candidate"). Upstream `main` branch works there (it installs `qemu-user-binfmt` on Ubuntu 26.04, and `qemu-user-static` on older Ubuntu versions), but it is not released yet. So this fork just provides upstream `main` as a version we can use.
+
+- It seems simpler to maintain this fork than to pin our workflows to an older Ubuntu version (like `ubuntu-24.04`) and wait for upstream to make a new release. We use this action in a number of repositories, and the fork allows to update them all in one place.
+
+Use it like this:
+
+```yaml
+    runs-on: ubuntu-latest
+    steps:
+    - uses: castle-engine/arm-runner-action@castle-current
+```
+
+The `castle-current` branch is a "rolling release": it points to the latest version that we tested and use. The `main` branch follows upstream `main`, with only this README section added. We periodically merge upstream changes into it.
+
+---
+
 Run tests natively and build images directly from GitHub Actions using a
 chroot-based virtualized Raspberry Pi (raspios/raspbian) environment.
 
