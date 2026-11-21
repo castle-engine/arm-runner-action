@@ -6,6 +6,8 @@ Why we fork:
 
 - To be compatible with `ubuntu-latest` GitHub-hosted runners (Ubuntu 26.04 now). The latest upstream release (v2.6.5, used by `pguyot/arm-runner-action@v2`) fails there, because it tries to install `qemu-user-static`, which is only a virtual package in Ubuntu 26.04 ("has no installation candidate"). Upstream `main` branch works there (it installs `qemu-user-binfmt` on Ubuntu 26.04, and `qemu-user-static` on older Ubuntu versions), but it is not released yet. So this fork just provides upstream `main` as a version we can use.
 
+    We also fix passing the environment variables to the commands on Ubuntu 26.04: the action used `sudo -E`, which is not supported by [sudo-rs](https://github.com/trifectatechfoundation/sudo-rs) (the default `sudo` on Ubuntu >= 25.10). We pass an explicit list of variables to `sudo --preserve-env=...` instead, which works with both `sudo-rs` and classic `sudo`.
+
 - It seems simpler to maintain this fork than to pin our workflows to an older Ubuntu version (like `ubuntu-24.04`) and wait for upstream to make a new release. We use this action in a number of repositories, and the fork allows to update them all in one place.
 
 Use it like this:
@@ -16,7 +18,7 @@ Use it like this:
     - uses: castle-engine/arm-runner-action@castle-current
 ```
 
-The `castle-current` branch is a "rolling release": it points to the latest version that we tested and use. The `main` branch follows upstream `main`, with only this README section added, and with tests (in `.github/workflows/`) limited to the images we use (`raspios_lite:latest`, `raspios_lite_arm64:latest`). We periodically merge upstream changes into it.
+The `castle-current` branch is a "rolling release": it points to the latest version that we tested and use. The `main` branch follows upstream `main`, with this README section added, the above `sudo` fix, and with tests (in `.github/workflows/`) limited to the images we use (`raspios_lite:latest`, `raspios_lite_arm64:latest`). We periodically merge upstream changes into it.
 
 ---
 
