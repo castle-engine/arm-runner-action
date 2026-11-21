@@ -16,7 +16,7 @@ Use it like this:
     - uses: castle-engine/arm-runner-action@castle-current
 ```
 
-The `castle-current` branch is a "rolling release": it points to the latest version that we tested and use. The `main` branch follows upstream `main`, with only this README section added. We periodically merge upstream changes into it.
+The `castle-current` branch is a "rolling release": it points to the latest version that we tested and use. The `main` branch follows upstream `main`, with only this README section added, and with tests (in `.github/workflows/`) limited to the images we use (`raspios_lite:latest`, `raspios_lite_arm64:latest`). We periodically merge upstream changes into it.
 
 ---
 
